@@ -1,15 +1,17 @@
 -- Create tables for AI Project on Subway Crowdedness
-DROP TABLE STATION;
-DROP TABLE SUBWAY_LINE_DETAIL;
-DROP TABLE SUBWAY_LINE;
 DROP TABLE TRAIN;
 DROP TABLE INDOOR_PICTURE;
+DROP TABLE SUBWAY_LINE;
+DROP TABLE SUBWAY_LINE_DETAIL;
+DROP TABLE STATION;
 
 -- 역 정보
 CREATE TABLE STATION
 (
-    ID      VARCHAR2(20) PRIMARY KEY,         -- 역 ID
-    NAME    NVARCHAR2(12)                     -- 역명(한글)
+    ID      NVARCHAR2(50) PRIMARY KEY,         -- 역ID(한글)
+    NAME    VARCHAR2(100),                     -- 영어 역명
+    Phone   VARCHAR2(15),                      -- 전화번호
+    ADDRESS NVARCHAR2(200)                     -- 주소   
 );
 
 -- 지하철 노선 상세 정보
@@ -26,9 +28,9 @@ CREATE TABLE SUBWAY_LINE
 (
     LINE            NUMBER(2),     -- 본선 Number(1, 2, 3, 4....  
     SUBLINE         NUMBER(2),     -- 지선 Number(1, 2).  	 
-    STATION_ID      VARCHAR2(20),  -- 역 ID
-    PREV_STATION_ID VARCHAR2(20),  -- 이전 역 ID
-    NEXT_STATION_ID VARCHAR2(20),  -- 다음 역 ID
+    STATION_ID      NVARCHAR2(50), -- 역 ID
+    PREV_STATION_ID NVARCHAR2(50), -- 이전 역 ID
+    NEXT_STATION_ID NVARCHAR2(20), -- 다음 역 ID
     CONSTRAINT SUBWAY_LINE_PK PRIMARY KEY(LINE, SUBLINE, STATION_ID),
     CONSTRAINT SUBWAY_LINE_FK_1 FOREIGN KEY(LINE, SUBLINE) REFERENCES SUBWAY_LINE_DETAIL(LINE, SUBLINE),
     CONSTRAINT SUBWAY_LINE_FK_2 FOREIGN KEY(STATION_ID) REFERENCES STATION(ID),
@@ -49,10 +51,10 @@ CREATE TABLE TRAIN
 (
     LINE       NUMBER(2),
     SUBLINE    NUMBER(2),
-    ID         NUMBER(5),          -- TRAIN ID
-    STATION_ID VARCHAR2(20),       -- 현재 역 위치 정보
-    START_STATION_ID VARCHAR2(20), -- 출발역
-    END_STATION_ID VARCHAR2(20),   -- 종착역
+    ID         NUMBER(5),            -- TRAIN ID
+    STATION_ID NVARCHAR2(50),       -- 현재 역 위치 정보
+    START_STATION_ID NVARCHAR2(50), -- 출발역
+    END_STATION_ID NVARCHAR2(50),   -- 종착역
     PICTURE_ID_1 NUMBER(4),
     PICTURE_ID_2 NUMBER(4),
     PICTURE_ID_3 NUMBER(4),
