@@ -1,0 +1,89 @@
+Zoom에서 얘기했듯이, 만약 파이썬에서 DB관련 작업을 수행한다면 API는 훨씬 간단하게 처리할 수 있을 것 같습니다.
+
+제가 생각한 시나리오는 아래와 같습니다.
+Step 1. 서버에서 현재 역으로 들어오는 기차의 정보를 이용하여, 아래와 같은 자바 메소드를 거쳐 파이썬 호출 
+=> 서버에서는 이미 현재 역에 들어올 기차의 ID값을 알고 있음.  
+
+// line: 2 (2호선인 경우)
+// subline: 0 (본선인 경우)
+// id: XXXX (지하철 TRAIN의 ID)
+Boolean CalcCrowd(int line, int subline, String id) {
+   .....
+   // 파이썬 호출 후 결과 값을 받음.
+   bool result = callPython(line, subline, id)  // true인 경우, 혼잡도 계산 후, 결과 값을 DB TABLE에 정상적으로 업데이트 함을 의미. false인 경우, 혼잡도 계산 실패 또는 DB 업데이트 실패
+   return result:
+}
+
+Step 2. 파이썬에서 아래의 SQL Query를 이용해서 현재 역(예: '사당')에 접근 중인 기차의 복잡도 관련된 사진들을 읽어갑니다.
+- 여기서, Java에서 Python으로 where절에 필요한 LINE(int), SUBLINE(int), ID(string)정보를 제공해 주면 됨.
+- 사진은 용량을 고려하여 BLOB Datatype을 사용. (다른 타입들과 읽어가는 방식이 조금 복잡함)
+
+SELECT (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.PICTURE_ID1) PICTURE_1, -- 1호차의 복잡도 사진
+          (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.picture_id2) PICTURE_2,     -- 2호차의 복잡도 사진
+          (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.PICTURE_ID3) PICTURE_3,  -- 3호차의 복잡도 사진 
+          (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.PICTURE_ID4) PICTURE_4, -- 4호차의 복잡도 사진
+          (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.PICTURE_ID5) PICTURE_5, -- 5호차의 복잡도 사진
+         (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.PICTURE_ID6) PICTURE_6, -- 6호차의 복잡도 사진
+         (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.PICTURE_ID7) PICTURE_7, -- 7호차의 복잡도 사진
+         (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.PICTURE_ID8) PICTURE_8, -- 8호차의 복잡도 사진
+         (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.PICTURE_ID9) PICTURE_9, -- 9호차의 복잡도 사진
+         (SELECT PICTURE FROM INDOOR_PICTURE WHERE ID = A.PICTURE_ID10) PICTURE_10 -- 10호차의 복잡도 사진
+  FROM TRAIN A
+ WHERE LINE = 2        -- 2호선
+   AND SUBLINE = 0    -- 본선 (1, 2: 지선)
+   AND ID = '2003';      -- 기차번호
+
+Step 3. 읽어간 10장의 사진에 대한 복잡도 계산을 딥러닝함.
+
+Step 4.  10장의 사진에 대한 딥러닝이 완료되면, 혼잡도 값을 Python에서 DB에 직접 업데이트함. 참고로, UPDATED 칼럼을 'Y'로 변경.(정상 업데이트의 의미)
+혼잡도: 1 => 한가
+          2 => 보통
+          3 => 혼잡
+
+UPDATE TRAIN
+   SET UPDATED = 'Y',         -- 정상적으로 업데이트가 쳐질 경우, 'Y'로 표시
+       CROWDEDNESS1 = 1,  -- 1호차 혼잡도 
+       CROWDEDNESS2 = 1,  -- 2호차 혼잡도 
+       CROWDEDNESS3 = 2,  -- 3호차 혼잡도 
+       CROWDEDNESS4 = 2,  -- 4호차 혼잡도 
+       CROWDEDNESS5 = 3,  -- 5호차 혼잡도 
+       CROWDEDNESS6 = 2,  -- 6호차 혼잡도 
+       CROWDEDNESS7 = 2,  -- 7호차 혼잡도 
+       CROWDEDNESS8 = 1,  -- 8호차 혼잡도 
+       CROWDEDNESS9 = 2,  -- 9호차 혼잡도 
+       CROWDEDNESS10 = 1  -- 10호차 혼잡도 
+ WHERE LINE = 2     -- 2호선
+   AND SUBLINE = 0 -- 본선 (1, 2: 지선)
+   AND ID = '2003';   -- 기차번호
+
+Step 5. 위의 작업이 모두 완료되면, 파이썬에서 자바 파일로 결과 상태값 전달.
+1) 정상적으로 복잡도 계산이 완료되고, DB update도 정상완료 
+   def callPython()
+   {
+      ....
+      return True
+   }
+2) 1)이 아닌 경우
+   def callPython()
+   {
+      ....
+      return False
+   }
+
+이렇게 작업하면, 자바랑 파이썬에 대한 인터페이스가 단순할 것 같네요.
+준호씨께서 Python이랑 인터페이스하는 자바 파일부터 작업을 해주시면, 나중에 그 자바 파일을 서버에 Integration하면 될 것 같아요.
+
+결국, Interface에 사용되는 자바 메소드는 아래와 같이 되면 될 것 같습니다.
+
+// line: 2 (2호선인 경우)
+// subline: 0 (본선인 경우)
+// id: XXXX (지하철 TRAIN의 ID)
+Boolean CalcCrowd(int line, int subline, String id) {
+   .....
+   // 파이썬 호출 후 결과 값을 받음.
+   bool result = callPython(line, subline, id)  // true인 경우, 혼잡도 계산 후, 결과 값을 DB TABLE에 정상적으로 업데이트 함을 의미. false인 경우, 혼잡도 계산 실패 또는 DB 업데이트 실패
+   return result:
+}
+
+이상입니다.
+  
