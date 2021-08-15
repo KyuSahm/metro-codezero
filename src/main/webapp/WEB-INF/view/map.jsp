@@ -12,8 +12,8 @@
             <h1>2호선 노선도</h1>
             <table border="1">
                 <tr>
-                    <c:forEach var="station" items="${stationList}">
-                    <td>${station.id}</td>
+                    <c:forEach var="st" items="${stationList}">
+                    <td><a href="station">${st.id}</a></td>                    
                     </c:forEach>
                 </tr>                 
             </table>            

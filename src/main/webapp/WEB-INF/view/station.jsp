@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,7 @@
 <body>
     <main>
         <section>            
-           <form action='search' method="post">
+           <form method="post">
                <fieldset>
                     <legend>지하철 역별 혼잡도 검색</legend>  
                     <label>역명</label>
@@ -21,9 +21,10 @@
 
         <section>
             <h1>방배방면</h1>
+            <c:forEach var="train" items="${trainList}">
             <table border="1">
                 <tr>
-                    <td colspan="10">성수행 3분 21초</td>
+                    <td colspan="10">${train.destStationId} ${Math.floor(train.arriveSec / 60)}분 ${train.arriveSec % 60}초</td>
                 </tr>
                 <tr>
                     <td>1호차</td>
@@ -38,47 +39,19 @@
                     <td>10호차</td>
                 </tr>
                 <tr>
-                    <td>보통</td>
-                    <td>보통</td>
-                    <td>보통</td>
-                    <td>혼잡</td>
-                    <td>혼잡</td>
-                    <td>혼잡</td>
-                    <td>보통</td>
-                    <td>보통</td>
-                    <td>보통</td>
-                    <td>혼잡</td>
+                    <td>${train.crowdedness1}</td>
+                    <td>${train.crowdedness2}</td>
+                    <td>${train.crowdedness3}</td>
+                    <td>${train.crowdedness4}</td>
+                    <td>${train.crowdedness5}</td>
+                    <td>${train.crowdedness6}</td>
+                    <td>${train.crowdedness7}</td>
+                    <td>${train.crowdedness8}</td>
+                    <td>${train.crowdedness9}</td>
+                    <td>${train.crowdedness10}</td>
                 </tr>                 
             </table>
-            <table border="1">
-                <tr>
-                    <td colspan="10">성수행 8분 46초</td>
-                </tr>
-                <tr>
-                    <td>1호차</td>
-                    <td>2호차</td>
-                    <td>3호차</td>
-                    <td>4호차</td>
-                    <td>5호차</td>
-                    <td>6호차</td>
-                    <td>7호차</td>
-                    <td>8호차</td>
-                    <td>9호차</td>
-                    <td>10호차</td>
-                </tr>
-                <tr>
-                    <td>보통</td>
-                    <td>혼잡</td>
-                    <td>보통</td>
-                    <td>보통</td>
-                    <td>보통</td>
-                    <td>보통</td>
-                    <td>보통</td>
-                    <td>한가</td>
-                    <td>한가</td>
-                    <td>한가</td>
-                </tr>                 
-            </table>
+            </c:forEach>
         </section>
     </main>
 </body>
