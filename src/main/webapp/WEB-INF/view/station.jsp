@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +25,7 @@
             <c:forEach var="train" items="${trainList}">
             <table border="1">
                 <tr>
-                    <td colspan="10">${train.destStationId} ${Math.floor(train.arriveSec / 60)}분 ${train.arriveSec % 60}초</td>
+                    <td colspan="10">${train.destStationId} <fmt:formatNumber type="number" pattern="#분" value="${Math.floor(train.arriveSec / 60)}" /> ${train.arriveSec % 60}초</td>
                 </tr>
                 <tr>
                     <td>1호차</td>
