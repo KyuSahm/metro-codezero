@@ -1,0 +1,12 @@
+﻿INSERT INTO subway_line_detail(line, subline, name) VALUES(1, 0, '1호선 본선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(2, 0, '2호선 본선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(2, 1, '2호선 성수 지선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(2, 2, '2호선 신정 지선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(3, 0, '3호선 본선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(4, 0, '4호선 본선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(5, 0, '5호선 본선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(5, 1, '5호선 마천 지선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(6, 0, '6호선 본선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(7, 0, '7호선 본선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(8, 0, '8호선 본선');
+INSERT INTO subway_line_detail(line, subline, name) VALUES(9, 0, '9호선 본선');
