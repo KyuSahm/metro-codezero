@@ -29,9 +29,9 @@ public interface StationDao {
 			+ "		left outer join train c "
 			+ "     on (b.line = c.line and b.subline = c.subline and b.train_id = c.id)")
 	@Results({
-        @Result(property = "arriveSec", column = "ARRIVE_SEC"),
-        @Result(property = "trainId", column = "TRAIN_ID"),
-        @Result(property = "destStationId", column = "DEST_STATION_ID")        
-    })	
+        @Result(property = "arriveSec", column = "arrive_sec"),
+        @Result(property = "trainId", column = "train_id"),
+        @Result(property = "destStationId", column = "dest_station_id")
+    })
 	List<Train> getNextTrainList();
 }
