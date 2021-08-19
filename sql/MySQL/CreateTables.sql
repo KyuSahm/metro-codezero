@@ -13,6 +13,8 @@ create table station
     ename   VARCHAR(100) NULL,                -- english name
     phone   VARCHAR(15) NULL,                 -- phone number
     address NVARCHAR(200)  NULL,              -- address
+    x_coord INT NULL,                         -- x coord of station in subway map
+    y_coord INT NULL,                         -- y coord of station in subway map
     PRIMARY KEY(id))
 ENGINE = InnoDB;
 

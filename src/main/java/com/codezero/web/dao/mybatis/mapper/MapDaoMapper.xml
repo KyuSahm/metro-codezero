@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codezero.web.dao.MapDao"><!-- Full name of interface -->
+  <resultMap id="stationMap" type="com.codezero.web.entity.Station">
+    <result property="prevId" column="prev_id"/>
+    <result property="nextId" column="next_id"/>
+    <result property="externalCode" column="external_code"/>
+  </resultMap>
+  <!-- select statement, id => Dao Method name, resultType => class for one row -->
+  <select id="getStationList" resultType="com.codezero.web.entity.Station" resultMap="stationMap"> 
+    select a.seq, a.line line, a.subline subline, a.station_id id, a.prev_station_id prev_id,
+           a.next_station_id next_id, a.external_code external_code, b.ename ename, b.phone phone, b.address address
+      from subway_line a, station b
+     where a.line = 2
+       and a.subline = 0
+       and a.station_id = b.id
+     order by a.line, a.subline, a.seq
+  </select>      
+</mapper>
