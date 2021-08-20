@@ -111,7 +111,8 @@ create table station_timetable
     orig_station_id  NVARCHAR(50) NULL,     -- orig station id
     dest_station_id  NVARCHAR(50) NULL,     -- dest station id
     train_id         INT NOT NULL,          -- train id
-    express_yn       CHAR(1) NULL,          -- express 'y' or 'n'
+    express_yn       CHAR(1) NULL,          -- express 'G' or 'N'
+    daytype          CHAR(1) NOT NULL,      -- '1': Normal Day, '2': Saturday '3": Holiday or Sunday
     PRIMARY KEY(line, subline, station_id, direction, arrivetime),
     FOREIGN KEY(line, subline, station_id) REFERENCES subway_line(line, subline, station_id) ON DELETE NO ACTION ON UPDATE NO ACTION)
 ENGINE = InnoDB;

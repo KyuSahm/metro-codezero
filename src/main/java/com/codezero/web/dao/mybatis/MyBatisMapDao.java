@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.codezero.web.dao.MapDao;
 import com.codezero.web.entity.Station;
+import com.codezero.web.entity.SubwayLineDetail;
 
 @Repository
 public class MyBatisMapDao implements MapDao {
@@ -21,6 +22,11 @@ public class MyBatisMapDao implements MapDao {
 	@Override
 	public List<Station> getStationList() {
 		return mapper.getStationList();
+	}
+
+	@Override
+	public List<SubwayLineDetail> getSubwayLineDetailList() {
+		return mapper.getSubwayLineDetailList();
 	}
 
 }

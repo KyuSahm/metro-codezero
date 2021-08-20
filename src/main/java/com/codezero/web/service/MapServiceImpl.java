@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.codezero.web.dao.MapDao;
 import com.codezero.web.entity.Station;
+import com.codezero.web.entity.SubwayLineDetail;
 
 @Service
 public class MapServiceImpl implements MapService {
@@ -17,5 +18,11 @@ public class MapServiceImpl implements MapService {
 	public List<Station> getStationList() {
 		List<Station> stationList = mapDao.getStationList();
 		return stationList;
+	}
+	
+	@Override
+	public List<SubwayLineDetail> getSubwayLineDetailList() {
+		List<SubwayLineDetail> subwayLineDetailList = mapDao.getSubwayLineDetailList();
+		return subwayLineDetailList;
 	}
 }

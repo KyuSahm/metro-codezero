@@ -18,4 +18,9 @@
        and a.station_id = b.id
      order by a.line, a.subline, a.seq
   </select>      
+  <select id="getSubwayLineDetailList" resultType="com.codezero.web.entity.SubwayLineDetail"> 
+    select line, subline, name as linename
+      from subway_line_detail
+     order by line, subline
+  </select>  
 </mapper>
