@@ -56,8 +56,8 @@ ENGINE = InnoDB;
 create table train
 (
     line       INT NOT NULL,
-    subline    INT NOT NULL,
-    id         INT NOT NULL,            -- train id
+    subline    INT NOT NULL,    
+    id         VARCHAR(10) NOT NULL,    -- train id
     station_id NVARCHAR(50) NULL,       -- current station id
     start_station_id NVARCHAR(50) NULL, -- start station id
     end_station_id NVARCHAR(50) NULL,   -- end
@@ -105,14 +105,14 @@ create table station_timetable
     line             INT NOT NULL,          -- main line number(1, 2, 3, 4....  
     subline          INT NOT NULL,          -- sub line number(0, 1, 2).  	 
     station_id       NVARCHAR(50) NOT NULL, -- station id
-    direction        VARCHAR(10) NOT NULL,  -- dirction (cw, ccw, up, down)
+    direction        INT NOT NULL,          -- dirction (cw, ccw, up, down)
     arrivetime       CHAR(8) NOT NULL,      -- arrval time
     lefttime         CHAR(8) NULL,          -- left time
     orig_station_id  NVARCHAR(50) NULL,     -- orig station id
     dest_station_id  NVARCHAR(50) NULL,     -- dest station id
-    train_id         INT NOT NULL,          -- train id
+    train_id         VARCHAR(10) NOT NULL,  -- train id
     express_yn       CHAR(1) NULL,          -- express 'G' or 'N'
-    daytype          CHAR(1) NOT NULL,      -- '1': Normal Day, '2': Saturday '3": Holiday or Sunday
+    daytype          INT NOT NULL,          -- '1': Normal Day, '2': Saturday '3": Holiday or Sunday
     PRIMARY KEY(line, subline, station_id, direction, arrivetime),
     FOREIGN KEY(line, subline, station_id) REFERENCES subway_line(line, subline, station_id) ON DELETE NO ACTION ON UPDATE NO ACTION)
 ENGINE = InnoDB;

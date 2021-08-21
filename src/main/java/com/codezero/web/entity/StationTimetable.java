@@ -4,14 +4,32 @@ public class StationTimetable {
 	private int line;
 	private int subline;
 	private String stationId;
-	private String direction;
+	private int direction;
 	private String arriveTime;
 	private String leftTime;
 	private String origStationId;
 	private String destStationId;
-	private int trainId;
+	private String trainId;
 	private String expressYn;
-	private String dayType;
+	private int dayType;
+
+	
+	public StationTimetable(int line, int subline, String stationId, int direction, String arriveTime,
+			String leftTime, String origStationId, String destStationId, String trainId, String expressYn,
+			int dayType) {
+		super();
+		this.line = line;
+		this.subline = subline;
+		this.stationId = stationId;
+		this.direction = direction;
+		this.arriveTime = arriveTime;
+		this.leftTime = leftTime;
+		this.origStationId = origStationId;
+		this.destStationId = destStationId;
+		this.trainId = trainId;
+		this.expressYn = expressYn;
+		this.dayType = dayType;
+	}
 
 	public int getLine() {
 		return line;
@@ -37,11 +55,11 @@ public class StationTimetable {
 		this.stationId = stationId;
 	}
 
-	public String getDirection() {
+	public int getDirection() {
 		return direction;
 	}
 
-	public void setDirection(String direction) {
+	public void setDirection(int direction) {
 		this.direction = direction;
 	}
 
@@ -77,11 +95,11 @@ public class StationTimetable {
 		this.destStationId = destStationId;
 	}
 
-	public int getTrainId() {
+	public String getTrainId() {
 		return trainId;
 	}
 
-	public void setTrainId(int trainId) {
+	public void setTrainId(String trainId) {
 		this.trainId = trainId;
 	}
 
@@ -93,11 +111,11 @@ public class StationTimetable {
 		this.expressYn = expressYn;
 	}
 
-	public String getDayType() {
+	public int getDayType() {
 		return dayType;
 	}
 
-	public void setDayType(String dayType) {
+	public void setDayType(int dayType) {
 		this.dayType = dayType;
 	}
 

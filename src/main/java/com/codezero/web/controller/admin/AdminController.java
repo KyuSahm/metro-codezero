@@ -1,7 +1,9 @@
 package com.codezero.web.controller.admin;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,8 +31,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value="/update-timetable", method=RequestMethod.POST)
-	public String updateTimetable(@RequestParam(name = "subwayLine") String subwayLine, Model model) {
-		
+	public String updateTimetable(@RequestParam(name = "subwayLine") String subwayLine, Model model)
+			throws IOException, JSONException {
+		boolean result = stationService.updateTimetable(2, 0);		
 		List<SubwayLineDetail> subwayLineDetailList = mapService.getSubwayLineDetailList();
 		model.addAttribute("subwayLineDetailList", subwayLineDetailList);		
 		return "admin/update-timetable";

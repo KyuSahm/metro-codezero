@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.codezero.web.dao.StationDao;
+import com.codezero.web.entity.StationTimetable;
 import com.codezero.web.entity.Train;
 
 @Repository
@@ -23,4 +24,8 @@ public class MyBatisStationDao implements StationDao {
 		return mapper.getNextTrainList();
 	}
 
+	@Override
+	public int insertTimetable(StationTimetable timetable) {
+		return mapper.insertTimetable(timetable);
+	}	
 }

@@ -25,5 +25,12 @@
              order by arrivetime asc LIMIT 2) b
       left outer join train c
         on (b.line = c.line and b.subline = c.subline and b.train_id = c.id)
-  </select>      
+  </select>
+  <!-- insert statement, id => Dao Method name, parameterType => method argument-->
+  <insert id="insertTimetable" parameterType="com.codezero.web.entity.StationTimetable">
+    insert into station_timetable(line, subline, station_id, direction, arrivetime, lefttime, orig_station_id, dest_station_id,
+                                  train_id, express_yn, daytype)
+         values (#{line}, #{subline}, #{stationId}, #{direction}, #{arriveTime}, #{leftTime}, #{origStationId}, #{destStationId},
+                 #{trainId}, #{expressYn}, #{dayType})
+  </insert>      
 </mapper>
