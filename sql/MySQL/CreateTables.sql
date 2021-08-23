@@ -30,19 +30,20 @@ ENGINE = InnoDB;
 -- subway line circuit information
 create table subway_line
 (
-    line            INT NOT NULL,     -- main line number(1, 2, 3, 4....  
-    subline         INT NOT NULL,     -- sub line number(0, 1, 2).  	 
-    station_id      NVARCHAR(50) NOT NULL, -- station id
-    seq             INT NOT NULL,          -- sequence 
-    prev_station_id NVARCHAR(50) NULL, -- previous station id
-    next_station_id NVARCHAR(50) NULL, -- next station id
-    external_code   VARCHAR(10) NOT NULL,   -- external station code to find information with open api
-    PRIMARY KEY(line, subline, station_id),
-    FOREIGN KEY(line, subline) REFERENCES subway_line_detail(line, subline) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY(station_id) REFERENCES station(id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY(prev_station_id) REFERENCES station(id) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY(next_station_id) REFERENCES station(id) ON DELETE NO ACTION ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    line            INT NOT NULL,            -- main line number(1, 2, 3, 4....  
+    subline         INT NOT NULL,            -- sub line number(0, 1, 2).
+    seq             INT NOT NULL,            -- sequence   	 
+    station_id      NVARCHAR(50) NOT NULL,   -- station id    
+    prev_station_id NVARCHAR(50) NULL,       -- previous station id
+    next_station_id NVARCHAR(50) NULL,       -- next station id
+    external_code   VARCHAR(10) NOT NULL,    -- external station code to find information with open api
+    direction       INT NOT NULL DEFAULT(1), -- 1: up 2: down
+    PRIMARY KEY(line, subline, seq, station_id)
+) ENGINE = InnoDB;
+
+
+--FOREIGN KEY(line, subline) REFERENCES subway_line_detail(line, subline) ON DELETE NO ACTION ON UPDATE NO ACTION,
+--FOREIGN KEY(station_id) REFERENCES station(id) ON DELETE NO ACTION ON UPDATE NO ACTION
 
 -- indoor picture data
 create table indoor_picture
