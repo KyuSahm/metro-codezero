@@ -9,7 +9,7 @@ import com.codezero.web.entity.Train;
 
 public interface StationService {
 
-	List<Train> getNextTrainList();
+	List<Train> getNextTrainList(int line, int subline, String stationId, int dayType, int direction);
 
 	boolean updateTimetable(int line, int subline) throws IOException, JSONException;
 }

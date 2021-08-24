@@ -21,8 +21,8 @@ public class StationServiceImpl implements StationService {
 	private OpenApiDao openApiDao;
 	
 	@Override
-	public List<Train> getNextTrainList() {
-		List<Train> trainList = stationDao.getNextTrainList();
+	public List<Train> getNextTrainList(int line, int subline, String stationId, int dayType, int direction) {
+		List<Train> trainList = stationDao.getNextTrainList(line, subline, stationId, dayType, direction);
 		return trainList;
 	}
 	

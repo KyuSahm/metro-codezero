@@ -20,8 +20,8 @@ public class MyBatisMapDao implements MapDao {
 	}
 
 	@Override
-	public List<Station> getStationList() {
-		return mapper.getStationList();
+	public List<Station> getStationList(int line, int subline) {
+		return mapper.getStationList(line, subline);
 	}
 
 	@Override

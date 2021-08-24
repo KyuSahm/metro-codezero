@@ -6,6 +6,6 @@ import com.codezero.web.entity.Station;
 import com.codezero.web.entity.SubwayLineDetail;
 
 public interface MapService {
-	List<Station> getStationList();
+	List<Station> getStationList(int line, int subline);
 	List<SubwayLineDetail> getSubwayLineDetailList();
 }

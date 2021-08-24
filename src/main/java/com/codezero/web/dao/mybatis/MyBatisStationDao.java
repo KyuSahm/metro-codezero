@@ -20,8 +20,8 @@ public class MyBatisStationDao implements StationDao {
 	}
 	
 	@Override
-	public List<Train> getNextTrainList() {
-		return mapper.getNextTrainList();
+	public List<Train> getNextTrainList(int line, int subline, String stationId, int dayType, int direction) {
+		return mapper.getNextTrainList(line, subline, stationId, dayType, direction);
 	}
 
 	@Override

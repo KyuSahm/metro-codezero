@@ -6,7 +6,7 @@ import com.codezero.web.entity.StationTimetable;
 import com.codezero.web.entity.Train;
 
 public interface StationDao {
-	List<Train> getNextTrainList();
+	List<Train> getNextTrainList(int line, int subline, String stationId, int dayType, int direction);
 
 	int insertTimetable(StationTimetable timetable);
 }

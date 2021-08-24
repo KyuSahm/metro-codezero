@@ -15,8 +15,8 @@ public class MapServiceImpl implements MapService {
 	private MapDao mapDao;
 	
 	@Override
-	public List<Station> getStationList() {
-		List<Station> stationList = mapDao.getStationList();
+	public List<Station> getStationList(int line, int subline) {
+		List<Station> stationList = mapDao.getStationList(line, subline);
 		return stationList;
 	}
 	

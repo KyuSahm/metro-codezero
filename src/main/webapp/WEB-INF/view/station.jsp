@@ -14,7 +14,7 @@
                <fieldset>
                     <legend>지하철 역별 혼잡도 검색</legend>  
                     <label>역명</label>
-                    <input type="text" name="station" value="사당"/>
+                    <input type="text" name="station" value="${station_id}"/>
                     <input type="submit" value="검색">
                 </fieldset>
             </form>
