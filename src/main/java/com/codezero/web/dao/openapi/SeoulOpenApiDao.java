@@ -134,6 +134,7 @@ public class SeoulOpenApiDao implements OpenApiDao {
 			String externalCode, int dayType, int direction) throws IOException, JSONException {
 		String url = getUrl(startIndex, endIndex, externalCode, dayType, direction);
 		
+		System.out.println("URL:"+ url);
 		JSONObject root = readJsonFile(url);
 		JSONObject searchTimeTableService = (JSONObject)root.get(SearchTimeTable);																			 
 		JSONArray rows = (JSONArray)(searchTimeTableService.get("row"));
@@ -146,8 +147,6 @@ public class SeoulOpenApiDao implements OpenApiDao {
 					row.get("SUBWAYSNAME").toString(), row.get("SUBWAYENAME").toString(),
 					row.get("TRAIN_NO").toString(), row.get("EXPRESS_YN").toString(), dayType);
 			timetableList.add(timetable);
-			//System.out.println(row.get("STATION_NM"));
-			//System.out.println(rows.get(i));
 		}
 		
 		return timetableList;

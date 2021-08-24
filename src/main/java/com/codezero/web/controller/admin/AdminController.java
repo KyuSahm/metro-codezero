@@ -33,7 +33,12 @@ public class AdminController {
 	@RequestMapping(value="/update-timetable", method=RequestMethod.POST)
 	public String updateTimetable(@RequestParam(name = "subwayLine") String subwayLine, Model model)
 			throws IOException, JSONException {
-		boolean result = stationService.updateTimetable(2, 0);		
+		
+		String[] lineInfo = subwayLine.split(",");		
+		int line = Integer.parseInt(lineInfo[0]);
+		int subline = Integer.parseInt(lineInfo[1]);		
+		boolean result = stationService.updateTimetable(line, subline);
+		
 		List<SubwayLineDetail> subwayLineDetailList = mapService.getSubwayLineDetailList();
 		model.addAttribute("subwayLineDetailList", subwayLineDetailList);		
 		return "admin/update-timetable";
