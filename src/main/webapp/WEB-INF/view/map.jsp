@@ -27,7 +27,8 @@
 	            <table border="1">
 	                <tr>
 	                    <c:forEach var="st" items="${stationList}">
-	                    <td><a href="station?line=${line}&subline=${subline}&station_id=${st.id}&direction=1">${st.id}</a></td>                    
+	                    <!--<td><a href="station?line=${line}&subline=${subline}&station_id=${st.id}&direction=1">${st.id}</a></td>-->
+	                    <td><a href="realtime-station?line=${line}&subline=${subline}&station_id=${st.id}&direction=1">${st.id}</a></td>                    
 	                    </c:forEach>
 	                </tr>                 
 	            </table>

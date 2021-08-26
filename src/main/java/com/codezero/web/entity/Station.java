@@ -13,8 +13,7 @@ public class Station {
     private String address;
     
     public Station()
-    {
-    	
+    {    	
     }
     
 	public int getLine() {

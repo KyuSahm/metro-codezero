@@ -5,6 +5,7 @@ drop table indoor_picture;
 drop table subway_line;
 drop table subway_line_detail;
 drop table station;
+drop table realtime_subway_line;
 
 -- station with detailed information
 create table station
@@ -24,6 +25,7 @@ create table subway_line_detail
     line       INT NOT NULL,
     subline    INT NOT NULL,
     name       NVARCHAR(12) NOT NULL,
+    subway_code  INT NOT NULL,               -- for integration with real time subway line information
     PRIMARY KEY(line, subline))
 ENGINE = InnoDB;
 
@@ -117,3 +119,12 @@ create table station_timetable
     PRIMARY KEY(line, subline, station_id, daytype, direction, arrivetime, train_id))
 ENGINE = InnoDB;
 -- , FOREIGN KEY(line, subline, station_id) REFERENCES subway_line(line, subline, station_id) ON DELETE NO ACTION ON UPDATE NO ACTION
+
+-- real time subway line information
+create table realtime_subway_line
+(
+    subway_code     INT NOT NULL,            -- SUBWAY_ID on real time. Represent line + subline 	 
+    station_code    VARCHAR(30) NOT NULL,    -- STATN_ID id on real time. Represent station code
+    station_id      NVARCHAR(50) NOT NULL,   -- STAT_NM on real time, station id
+    PRIMARY KEY(subway_code, station_code, station_id)
+) ENGINE = InnoDB;

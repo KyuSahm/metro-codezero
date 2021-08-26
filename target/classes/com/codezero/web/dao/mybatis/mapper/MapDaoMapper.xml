@@ -24,5 +24,11 @@
     select line, subline, name as linename
       from subway_line_detail
      order by line, subline
-  </select>  
+  </select>
+  <select id="getSubwayCode" resultType="int"> 
+    select subway_code
+      from subway_line_detail
+     where line = #{line}
+       and subline = #{subline}
+  </select>   
 </mapper>

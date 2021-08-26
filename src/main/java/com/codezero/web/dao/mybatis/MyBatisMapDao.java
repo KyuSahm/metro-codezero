@@ -28,5 +28,9 @@ public class MyBatisMapDao implements MapDao {
 	public List<SubwayLineDetail> getSubwayLineDetailList() {
 		return mapper.getSubwayLineDetailList();
 	}
-
+	
+	@Override
+	public int getSubwayCode(int line, int subline) {
+		return mapper.getSubwayCode(line, subline);
+	}
 }

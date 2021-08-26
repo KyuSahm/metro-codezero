@@ -25,4 +25,9 @@ public class MapServiceImpl implements MapService {
 		List<SubwayLineDetail> subwayLineDetailList = mapDao.getSubwayLineDetailList();
 		return subwayLineDetailList;
 	}
+	
+	@Override
+	public int getSubwayCode(int line, int subline) {
+		return mapDao.getSubwayCode(line, subline);
+	}
 }
