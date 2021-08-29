@@ -25,7 +25,12 @@ public class MyBatisStationDao implements StationDao {
 	}
 
 	@Override
+	public List<Train> getRealTimeNextTrainList(List<Train> realTimeTrainList) {
+		return mapper.getRealTimeNextTrainList(realTimeTrainList);
+	}
+	
+	@Override
 	public int insertTimetable(StationTimetable timetable) {
 		return mapper.insertTimetable(timetable);
-	}	
+	}		
 }

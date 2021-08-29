@@ -1,6 +1,7 @@
 package com.codezero.web.service;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import org.json.JSONException;
@@ -29,7 +30,15 @@ public class StationServiceImpl implements StationService {
 	public List<Train> getNextTrainList(int line, int subline, String stationId, int dayType, int direction) {
 		List<Train> trainList = stationDao.getNextTrainList(line, subline, stationId, dayType, direction);
 		return trainList;
-	}	
+	}
+	
+	@Override
+	public List<Train> getRealTimeNextTrainList(int subwayCode, String stationId, int direction)
+			throws UnsupportedEncodingException, IOException, JSONException {
+		List<Train> realTimeTrainList = openApiDao.getRealTimeNextTrainList(subwayCode, stationId, direction);
+		List<Train> trainList = stationDao.getRealTimeNextTrainList(realTimeTrainList);
+		return trainList;
+	}
 	
 	@Override
 	public boolean updateTimetable(int line, int subline) throws IOException, JSONException {
@@ -46,8 +55,8 @@ public class StationServiceImpl implements StationService {
 			for (int dayType = 1; dayType <= 3; dayType++) {
 				for (int direction = 1; direction <= 2; direction++) {
 					try {
-						List<StationTimetable> timetableList = openApiDao.getTimetable(line, subline, 1,
-																					   1000, stationCode, dayType, direction);
+						List<StationTimetable> timetableList =
+								openApiDao.getTimetable(line, subline, 1, 1000, stationCode, dayType, direction);
 						
 						int count = 0;
 						for (StationTimetable timetable: timetableList) {

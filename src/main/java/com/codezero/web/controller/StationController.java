@@ -1,7 +1,10 @@
 package com.codezero.web.controller;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,15 +40,16 @@ public class StationController {
 	public String realTimeStation(@RequestParam(name = "line") int line,
 			              		  @RequestParam(name = "subline") int subline,
 			              		  @RequestParam(name = "station_id") String stationId,
-			              		  @RequestParam(name = "direction") int direction, Model model) {
+			              		  @RequestParam(name = "direction") int direction, Model model)
+			              				throws UnsupportedEncodingException, IOException, JSONException {
 		
 		int subwayCode = mapService.getSubwayCode(line, subline);
-		System.out.println("subwayCode" + subwayCode);
 		
-		int dayType = 1;
-		List<Train> trainList = service.getNextTrainList(line, subline, stationId, dayType, direction);
-		model.addAttribute("station_id", stationId);
-		model.addAttribute("trainList", trainList);
+		List<Train> trainList = service.getRealTimeNextTrainList(subwayCode, stationId, direction);
+		if (trainList != null) {
+			model.addAttribute("station_id", stationId);
+			model.addAttribute("trainList", trainList);
+		}
 		
 		return "station";
 	}

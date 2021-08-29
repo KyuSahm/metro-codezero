@@ -37,7 +37,7 @@ public class AdminController {
 		String[] lineInfo = subwayLine.split(",");		
 		int line = Integer.parseInt(lineInfo[0]);
 		int subline = Integer.parseInt(lineInfo[1]);		
-		boolean result = stationService.updateTimetable(line, subline);
+		stationService.updateTimetable(line, subline);
 		
 		List<SubwayLineDetail> subwayLineDetailList = mapService.getSubwayLineDetailList();
 		model.addAttribute("subwayLineDetailList", subwayLineDetailList);		

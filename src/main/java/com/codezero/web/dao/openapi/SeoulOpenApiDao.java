@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -17,45 +18,39 @@ import org.springframework.stereotype.Repository;
 
 import com.codezero.web.dao.OpenApiDao;
 import com.codezero.web.entity.StationTimetable;
+import com.codezero.web.entity.Train;
 
 @Repository
 public class SeoulOpenApiDao implements OpenApiDao {
-	private final static String Server = "http://openapi.seoul.go.kr";
-	private final static String Port = "8088";
-	private final static String Certication_Key = "737875717867757338376567685154";
-	private final static String SearchTimeTable = "SearchSTNTimeTableByIDService";
+	private final static String TimeTable_Server = "http://openapi.seoul.go.kr";
+	private final static String TimeTable_Port = "8088";
+	private final static String TimeTable_Certication_Key = "737875717867757338376567685154";
+	private final static String TimeTable_Service = "SearchSTNTimeTableByIDService";
+
+	private final static String RealTime_Train_Server = "http://swopenapi.seoul.go.kr/api/subway";
+	private final static String RealTime_Train_Certication_Key = "6a476f4957677573383471666e524f";
+	private final static String RealTime_Service = "realtimeStationArrival";
 
 	// Response File Type
-	private final static String XML = "xml";
-	private final static String XMLF = "xmlf";
-	private final static String XLS = "xls";
+	private final static String XML = "xml";   // Not Supported
+	private final static String XMLF = "xmlf"; // Not Supported
+	private final static String XLS = "xls";   // Not Supported
 	private final static String JSON = "json";
 
-	private String server;
-	private String port;
-	private String reponseFileType;
-	private String certificateKey;
-	private String serviceName;
-
 	public SeoulOpenApiDao() {
-		setServer(Server);
-		setPort(Port);
-		setFileType(JSON);
-		setCertificateKey(Certication_Key);
-		setServiceName(SearchTimeTable);
 	}
-
-	private String getUrl(int startIndex, int endIndex, String externalCode, int dayType, int direction) {
+	
+	private String getTimetableUrl(int startIndex, int endIndex, String externalCode, int dayType, int direction) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.server);
+		sb.append(TimeTable_Server);
 		sb.append(":");
-		sb.append(this.port);
+		sb.append(TimeTable_Port);
 		sb.append("/");
-		sb.append(this.certificateKey);
+		sb.append(TimeTable_Certication_Key);
 		sb.append("/");
-		sb.append(this.reponseFileType);
+		sb.append(JSON);
 		sb.append("/");
-		sb.append(this.serviceName);
+		sb.append(TimeTable_Service);
 		sb.append("/");
 		sb.append(startIndex);
 		sb.append("/");
@@ -70,7 +65,32 @@ public class SeoulOpenApiDao implements OpenApiDao {
 
 		return sb.toString();
 	}
-
+	
+	private String getRealTimeTrainUrl(int startIndex, int endIndex, String stationId)
+			throws UnsupportedEncodingException {
+		byte[] stationIdBytes = stationId.getBytes("utf-8");
+		String stationUtf8Codes = "";
+		for (byte b: stationIdBytes)
+			stationUtf8Codes += "%" + String.format("%02X", b);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append(RealTime_Train_Server);
+		sb.append("/");
+		sb.append(RealTime_Train_Certication_Key);
+		sb.append("/");
+		sb.append(JSON);
+		sb.append("/");
+		sb.append(RealTime_Service);
+		sb.append("/");
+		sb.append(startIndex);
+		sb.append("/");
+		sb.append(endIndex);
+		sb.append("/");
+		sb.append(stationUtf8Codes);
+		
+		return sb.toString();
+	}
+	
 	private String readText(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		char[] buffer = new char[1000];
@@ -101,42 +121,15 @@ public class SeoulOpenApiDao implements OpenApiDao {
 		}
 	}
 
-	@Override
-	public void setServer(String server) {
-		this.server = server;
-	}
-
-	@Override
-	public void setPort(String port) {
-		this.port = port;
-	}
-
-	@Override
-	public void setCertificateKey(String certificateKey) {
-		this.certificateKey = certificateKey;
-	}
-
-	@Override
-	public void setFileType(String reponseFileType) {
-		this.reponseFileType = reponseFileType;
-	}
-
-	@Override
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
-
 	// URL Example: 1번 데이터부터 1000번 데이터까지 사당역(0226), 평일(1), 2(CCW or Down)
-	// "http://openapi.seoul.go.kr:8088/737875717867757338376567685154/json/SearchSTNTimeTableByIDService/1/1000/0226/1/2/"; 
-	
+	// "http://openapi.seoul.go.kr:8088/737875717867757338376567685154/json/SearchSTNTimeTableByIDService/1/1000/0226/1/2/";	
 	@Override
 	public List<StationTimetable> getTimetable(int line, int subline, int startIndex, int endIndex,
 			String externalCode, int dayType, int direction) throws IOException, JSONException {
-		String url = getUrl(startIndex, endIndex, externalCode, dayType, direction);
+		String url = getTimetableUrl(startIndex, endIndex, externalCode, dayType, direction);
 		
-		System.out.println("URL:"+ url);
 		JSONObject root = readJsonFile(url);
-		JSONObject searchTimeTableService = (JSONObject)root.get(SearchTimeTable);																			 
+		JSONObject searchTimeTableService = (JSONObject)root.get(TimeTable_Service);																			 
 		JSONArray rows = (JSONArray)(searchTimeTableService.get("row"));
 		
 		List<StationTimetable> timetableList = new ArrayList<StationTimetable>(); 
@@ -150,5 +143,56 @@ public class SeoulOpenApiDao implements OpenApiDao {
 		}
 		
 		return timetableList;
+	}
+
+	// URL Example: 1번부터 100번 데이터 까지 "사당역" -> utf8 bytes -> "%EC%82%AC%EB%8B%B9", direction: 상행(0), 하행(1)
+	// "http://swopenapi.seoul.go.kr/api/subway/6a476f4957677573383471666e524f/json/realtimeStationArrival/1/100/%EC%82%AC%EB%8B%B9"
+	@Override
+	public List<Train> getRealTimeNextTrainList(int subwayCode, String stationId, int direction)
+			throws UnsupportedEncodingException, IOException, JSONException {
+		String url = getRealTimeTrainUrl(1, 100, stationId);
+		//System.out.println(url);
+		JSONObject json = readJsonFile(url);
+		String directionStr = "상행";		
+		direction -= 1; // 1: 상행, 2: 하행 => 0: 상행, 1: 하행		
+		// in case of line number 2
+		if (subwayCode == 1002) {
+			if (direction == 0)
+				directionStr = "내선";
+			else
+				directionStr = "외선";
+		}
+		else {
+			if (direction == 0)
+				directionStr = "상행";
+			else
+				directionStr = "하행";
+		}
+		
+		int cnt = 0;
+		List<Train> trainList = new ArrayList<Train>();
+		JSONArray realtimeArrivalList = (JSONArray) json.get("realtimeArrivalList");		
+		for (int i = 0; i < realtimeArrivalList.length(); i++) {
+			JSONObject row = (JSONObject)realtimeArrivalList.get(i);
+			
+			int rowSubwayCode = Integer.parseInt(row.get("subwayId").toString());
+			
+			if (rowSubwayCode == subwayCode &&
+				row.get("updnLine").toString().equals(directionStr))
+			{
+				Train train = new Train();
+				train.setTrainId(row.get("btrainNo").toString());
+				train.setArriveSec(Integer.parseInt(row.get("barvlDt").toString()));
+				train.setDestStationId(row.get("bstatnNm").toString());				
+				trainList.add(train);
+				
+				cnt++;
+				
+				if (cnt >= 2)
+					break;
+			}
+		}
+		
+		return trainList;
 	}
 }
