@@ -1,3 +1,10 @@
+1. Python flask server 구성 방법
+1) PyCharm에서 새로운 프로젝트 생성
+2) 모듈 설치
+> pip install Flask
+> pip install flask-mysql
+> pip install cryptography # MySQL password 암호화 관련 모듈
+
 Zoom에서 얘기했듯이, 만약 파이썬에서 DB관련 작업을 수행한다면 API는 훨씬 간단하게 처리할 수 있을 것 같습니다.
 
 제가 생각한 시나리오는 아래와 같습니다.

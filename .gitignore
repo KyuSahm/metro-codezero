@@ -29,3 +29,9 @@ hs_err_pid*
 
 # exclude bin directory
 bin/**
+
+# exclude .idea for PyCharm
+.idea
+
+# exclude venv for PyCharm virtual env
+venv

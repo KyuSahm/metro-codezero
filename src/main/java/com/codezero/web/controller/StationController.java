@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.codezero.web.entity.Train;
+import com.codezero.web.service.CrowdnessService;
 import com.codezero.web.service.MapService;
 import com.codezero.web.service.StationService;
 
@@ -22,6 +23,8 @@ public class StationController {
 	private StationService service;
 	@Autowired
 	private MapService mapService;	
+	@Autowired
+	private CrowdnessService crowdnessService;
 	
 	@RequestMapping("/station")
 	public String station(@RequestParam(name = "line") int line,
@@ -50,6 +53,8 @@ public class StationController {
 			model.addAttribute("station_id", stationId);
 			model.addAttribute("trainList", trainList);
 		}
+		
+		crowdnessService.requestCalculation(2, 0, "2285");
 		
 		return "station";
 	}
