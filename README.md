@@ -4,7 +4,7 @@
 ***
 * 이 프로젝트와 관련된 기반 기술들은 아래와 같습니다.
   * AI Technology - Crowdedness Prediction using AI
-  * Database - Oracle
+  * Database - MySQL, Oracle
   * Backend Server - Spring Boot, JSP, and MyBatis
 
 ## 관련 이미지
